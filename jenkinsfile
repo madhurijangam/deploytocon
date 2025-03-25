@@ -20,11 +20,13 @@ pipeline {
     }
     stage('Deploy') {
       steps {
+        sh '/opt/tomcat/bin/shutdown.sh'
         //deploy war on tomcat server
         deploy adapters: [tomcat9(url: "${tomcatServerUrl}",
             credentialsId: 'Tomcat_username_password')],
           war: 'target/*.war',
           contextPath: 'pipeline-app'
+        sh '/opt/tomcat/bin/startup.sh'
 
       }
     }
